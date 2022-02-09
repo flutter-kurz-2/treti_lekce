@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:treti_lekce/screens/timer_screen.dart';
+import 'package:treti_lekce/screens/todo_screen.dart';
+
+import 'note_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,9 +22,24 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextButton(onPressed: () {}, child: const Text("NoteScreen")),
-            TextButton(onPressed: () {}, child: const Text("ToDoScreen")),
-            TextButton(onPressed: () {}, child: const Text("TimerScreen")),
+            TextButton(onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const NoteScreen()),
+              );
+            }, child: const Text("NoteScreen")),
+            TextButton(onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const TodoScreen()),
+              );
+              }, child: const Text("ToDoScreen")),
+            TextButton(onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const TimerScreen()),
+              );
+            }, child: const Text("TimerScreen")),
           ],
         ),
       ),
