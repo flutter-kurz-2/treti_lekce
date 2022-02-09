@@ -1,24 +1,51 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
-class TimerScreen extends StatefulWidget {
-  const TimerScreen({Key? key}) : super(key: key);
+class timer_screen extends StatefulWidget {
+  const timer_screen({Key? key}) : super(key: key);
 
   @override
-  State<TimerScreen> createState() => _TimerScreenState();
+  _timer_screenState createState() => _timer_screenState();
 }
 
-class _TimerScreenState extends State<TimerScreen> {
+int timeLeft = 10;
+
+
+class _timer_screenState extends State<timer_screen> {
+
+    void startCountdown () {
+      Timer.periodic(Duration(seconds: 1), (timer) {
+       if (timeLeft > 0) {
+         setState(() {
+           timeLeft--;
+         });
+       } else {
+         timer.cancel();
+       }
+      });
+    }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("TimerScreen"),
-      ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+            timeLeft.toString(),
+              style: TextStyle(fontSize: 80),
+        ),
+            MaterialButton(
+                onPressed: startCountdown,
+                child: Text(
+                    'START',
+                  style: TextStyle(color: Colors.white)
+                ),
+              color: Colors.black,
+                ),
           ],
         ),
       ),
