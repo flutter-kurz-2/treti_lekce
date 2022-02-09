@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
             TextButton(onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const TimerScreen()),
+                MaterialPageRoute(builder: (context) => const timer_screen()),
               );
             }, child: const Text("TimerScreen")),
           ],
