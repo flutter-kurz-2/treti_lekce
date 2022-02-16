@@ -12,11 +12,20 @@ class NoteScreen extends StatefulWidget {
 
 class _NoteScreenState extends State<NoteScreen> {
   TextEditingController noteController = TextEditingController();
+  late SharedPreferences _prefs;
+  bool loaded = false;
+  List<String> notes = []; //k pozdějšímu použití...
 
 
+  void load() async {
+    await SharedPreferences.getInstance();
+    loaded = true;
+  }
 
   void save() {
     Fluttertoast.showToast(msg: "Uloženo",);
+    _prefs.setString("NOTES", noteController.text); //Tohle uloží poznámku
+    noteController.text = ""; //Tohle smaže textové pole
   }
 
 
@@ -29,7 +38,9 @@ class _NoteScreenState extends State<NoteScreen> {
 
   }
 
-  newNote() {}
+  newNote() {
+
+  }
 
 
   @override
