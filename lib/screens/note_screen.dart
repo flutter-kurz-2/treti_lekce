@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
+
 class NoteScreen extends StatefulWidget {
   const NoteScreen({Key? key}) : super(key: key);
 
@@ -16,36 +17,39 @@ class _NoteScreenState extends State<NoteScreen> {
   bool loaded = false;
   List<String> notes = []; //k pozdějšímu použití...
 
+  @override
+  void initState(){
+    super.initState();
+    load();
+  }
 
   void load() async {
-    await SharedPreferences.getInstance();
+    _prefs = await SharedPreferences.getInstance();
+    noteController.text = _prefs.getString("NOTES") ?? "";
     loaded = true;
+    setState(() {});
   }
 
   void save() {
     Fluttertoast.showToast(msg: "Uloženo",);
     _prefs.setString("NOTES", noteController.text); //Tohle uloží poznámku
-    noteController.text = ""; //Tohle smaže textové pole
   }
-
-
-
 
 
 
   void delete() {
+    noteController.text = " ";
 
 
   }
 
-  newNote() {
+  addNote() {
 
   }
 
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -84,6 +88,19 @@ class _NoteScreenState extends State<NoteScreen> {
                       children: <Widget>[
 
                             Container(
+                                alignment: Alignment.bottomRight,
+                                 child: TextButton(
+                                  onPressed: delete,
+                                    child: const Icon(Icons.delete),
+                              style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(7),
+                              // <-- Splash color
+                            ),
+                          ),
+                        ),
+
+                            Container(
 
                               width: MediaQuery.of(context).size.width/20*18,
                               child: TextField(
@@ -97,20 +114,6 @@ class _NoteScreenState extends State<NoteScreen> {
                                 controller: noteController,
                               ),
                             ),
-
-                        //textField
-                        Container(
-                          alignment: Alignment.bottomRight,
-                          child: TextButton(
-                            onPressed: delete,
-                            child: const Icon(Icons.delete),
-                            style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder(),
-                              padding: const EdgeInsets.all(7),
-                              // <-- Splash color
-                            ),
-                          ),
-                        )
                       ],
                     ),
                   )
@@ -121,7 +124,7 @@ class _NoteScreenState extends State<NoteScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: newNote,
+      floatingActionButton: FloatingActionButton(onPressed: addNote,
         child: const Icon(Icons.add), tooltip: "Vytvořit novou poznámku",),
     );
   }
