@@ -15,7 +15,7 @@ class _NoteScreenState extends State<NoteScreen> {
   TextEditingController noteController = TextEditingController();
   late SharedPreferences _prefs;
   bool loaded = false;
-  List<String> notes = []; //k pozdějšímu použití...
+  List<String> notes = [];
 
   @override
   void initState(){
@@ -35,18 +35,14 @@ class _NoteScreenState extends State<NoteScreen> {
     notes.add(noteController.text);
     noteController.text = "";
     _prefs.setStringList("NOTES", notes);
+    setState(() {});
   }
 
 
 
   void delete() {
-    noteController.text = " ";
-
-
-  }
-
-  addNote() {
-
+    notes.clear();
+    setState(() {});
   }
 
 
@@ -59,8 +55,8 @@ class _NoteScreenState extends State<NoteScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
 
-              ElevatedButton(onPressed: save, child: const Text("Uložit"),style: ElevatedButton.styleFrom(
-                primary: Colors.green
+              ElevatedButton(onPressed: delete, child: const Text("Smazat"),style: ElevatedButton.styleFrom(
+                primary: Colors.red
               ), ),
               const SizedBox(width: 10,)
             ],
@@ -86,24 +82,7 @@ class _NoteScreenState extends State<NoteScreen> {
                       border: Border.all(),
                       borderRadius: const BorderRadius.all(Radius.circular(20))
                     ),
-                    child: Column(
-                      children: <Widget>[
-
-                            Container(
-                                alignment: Alignment.bottomRight,
-                                 child: TextButton(
-                                  onPressed: delete,
-                                    child: const Icon(Icons.delete),
-                              style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder(),
-                              padding: const EdgeInsets.all(7),
-                              // <-- Splash color
-                            ),
-                          ),
-                        ),
-
-                            Container(
-
+                    child: Container(
                               width: MediaQuery.of(context).size.width/20*18,
                               child: TextField(
                                 decoration: const InputDecoration(
@@ -116,9 +95,7 @@ class _NoteScreenState extends State<NoteScreen> {
                                 controller: noteController,
                               ),
                             ),
-                      ],
-                    ),
-                  ),
+                    ), 
                   Container(
                     height: 700,
                     child: ListView.builder(
@@ -136,7 +113,7 @@ class _NoteScreenState extends State<NoteScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: addNote,
+      floatingActionButton: FloatingActionButton(onPressed: save,
         child: const Icon(Icons.add), tooltip: "Vytvořit novou poznámku",),
     );
   }
