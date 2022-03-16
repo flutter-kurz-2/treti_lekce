@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
 class NoteScreen extends StatefulWidget {
   const NoteScreen({Key? key}) : super(key: key);
 
@@ -43,6 +41,7 @@ class _NoteScreenState extends State<NoteScreen> {
   void delete() {
     notes.clear();
     setState(() {});
+    Fluttertoast.showToast(msg: "Smazáno",);
   }
 
 
@@ -56,8 +55,8 @@ class _NoteScreenState extends State<NoteScreen> {
             children: <Widget>[
 
               ElevatedButton(onPressed: delete, child: const Text("Smazat"),style: ElevatedButton.styleFrom(
-                primary: Colors.red
-              ), ),
+                  primary: Colors.red
+              ),),
               const SizedBox(width: 10,)
             ],
           )
@@ -71,50 +70,61 @@ class _NoteScreenState extends State<NoteScreen> {
             const SizedBox(height: 20,),
 
             SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
 
-                  Container(
-                    width: MediaQuery.of(context).size.width/20*19,
-                    decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: const BorderRadius.all(Radius.circular(20))
-                    ),
-                    child: Container(
-                              width: MediaQuery.of(context).size.width/20*18,
-                              child: TextField(
-                                decoration: const InputDecoration(
+                    Container(
+                      width: MediaQuery.of(context).size.width/20*19,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: const BorderRadius.all(Radius.circular(20))
+                      ),
+
+                      child: Row(
+                        children: <Widget>[
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width/20*16,
+                            height: 90,
+                            child:TextField(
+                              decoration: const InputDecoration(
                                   enabledBorder: InputBorder.none,
                                   disabledBorder: InputBorder.none,
-                                  border: InputBorder.none,
-                                ),
-                                keyboardType: TextInputType.multiline,
-                                maxLines: null,
-                                controller: noteController,
-                              ),
+                                  border: InputBorder.none),
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              controller: noteController,
                             ),
-                    ), 
-                  Container(
-                    height: 700,
-                    child: ListView.builder(
-                          itemCount: notes.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(notes [index]),
-                            );
-                          })
-                  )
-                ],
-              )
+                          ),
+                          Container(
+                            width: 40,
+                            child: TextButton(onPressed: save,
+                              child: const Icon(Icons.add),),
+                          )
+                        ],
+                      )
+                    ),
+                    Container(
+                        height: 715,
+                        child: ListView.builder(
+                            itemCount: notes.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Text(notes [index]),
+                              );
+                            })
+                    )
+                  ],
+                )
             ),
-           const SizedBox(height: 20,),
+            const SizedBox(height: 20,),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: save,
-        child: const Icon(Icons.add), tooltip: "Vytvořit novou poznámku",),
     );
   }
 }
