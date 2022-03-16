@@ -119,14 +119,16 @@ class _NoteScreenState extends State<NoteScreen> {
                       ],
                     ),
                   ),
-                  
-                  ListView.builder(
-                      itemCount: notes.length,
-                      itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(notes [index]),
-                    );
-                  })
+                  Container(
+                    height: 700,
+                    child: ListView.builder(
+                          itemCount: notes.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(notes [index]),
+                            );
+                          })
+                  )
                 ],
               )
             ),
