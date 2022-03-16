@@ -25,14 +25,16 @@ class _NoteScreenState extends State<NoteScreen> {
 
   void load() async {
     _prefs = await SharedPreferences.getInstance();
-    noteController.text = _prefs.getString("NOTES") ?? "";
+    notes = _prefs.getStringList("NOTES") ?? [];
     loaded = true;
     setState(() {});
   }
 
   void save() {
     Fluttertoast.showToast(msg: "Uloženo",);
-    _prefs.setString("NOTES", noteController.text); //Tohle uloží poznámku
+    notes.add(noteController.text);
+    noteController.text = "";
+    _prefs.setStringList("NOTES", notes);
   }
 
 
@@ -116,7 +118,15 @@ class _NoteScreenState extends State<NoteScreen> {
                             ),
                       ],
                     ),
-                  )
+                  ),
+                  
+                  ListView.builder(
+                      itemCount: notes.length,
+                      itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(notes [index]),
+                    );
+                  })
                 ],
               )
             ),
