@@ -44,7 +44,6 @@ class _NoteScreenState extends State<NoteScreen> {
     Fluttertoast.showToast(msg: "Smazáno",);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,10 +109,12 @@ class _NoteScreenState extends State<NoteScreen> {
                     ),
                     Container(
                         height: 715,
-                        child: ListView.builder(
+                        child: ListView.separated(
+                            separatorBuilder: (BuildContext context, int index) => Divider(),
                             itemCount: notes.length,
                             itemBuilder: (context, index) {
                               return ListTile(
+                                ///onLongPress: notes.removeAt(index),
                                 title: Text(notes [index]),
                               );
                             })
