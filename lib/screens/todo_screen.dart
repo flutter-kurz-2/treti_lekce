@@ -22,13 +22,8 @@ class _TodoScreenState extends State<TodoScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TodoItem(),
-            TodoItem(),
-            TodoItem(),
-            TodoItem(),
-            TodoItem(),
-            TodoItem(),
-            TodoItem(),
+            TodoItem(title:"vec1"),
+            TodoItem(title:"vec2"),
           ],
         ),
       ),
