@@ -53,7 +53,7 @@ class _NoteScreenState extends State<NoteScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
 
-              ElevatedButton(onPressed: delete, child: const Text("Smazat"),style: ElevatedButton.styleFrom(
+              ElevatedButton(onPressed: delete, child: const Text("Smazat vše"),style: ElevatedButton.styleFrom(
                   primary: Colors.red
               ),),
               const SizedBox(width: 10,)
@@ -114,7 +114,7 @@ class _NoteScreenState extends State<NoteScreen> {
                             itemCount: notes.length,
                             itemBuilder: (context, index) {
                               return ListTile(
-                                ///onLongPress: notes.removeAt(index),
+                                  //onLongPress: () => notes.removeAt(index),
                                 title: Text(notes [index]),
                               );
                             })
