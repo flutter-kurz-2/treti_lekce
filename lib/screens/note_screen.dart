@@ -36,8 +36,6 @@ class _NoteScreenState extends State<NoteScreen> {
     setState(() {});
   }
 
-
-
   void delete() {
     notes.clear();
     setState(() {});
@@ -86,8 +84,8 @@ class _NoteScreenState extends State<NoteScreen> {
                           const SizedBox(
                             width: 15,
                           ),
-                          Container(
-                            width: MediaQuery.of(context).size.width/20*16,
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width/20*15,
                             height: 90,
                             child:TextField(
                               decoration: const InputDecoration(
@@ -99,30 +97,36 @@ class _NoteScreenState extends State<NoteScreen> {
                               controller: noteController,
                             ),
                           ),
-                          Container(
-                            width: 40,
+                          SizedBox(
+                            width: 45,
+                            height: 45,
                             child: TextButton(onPressed: save,
                               child: const Icon(Icons.add),),
                           )
                         ],
                       )
                     ),
-                    Container(
+                    SizedBox(
                         height: 715,
-                        child: ListView.separated(
-                            separatorBuilder: (BuildContext context, int index) => Divider(),
-                            itemCount: notes.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
+                        child: Scrollbar(
+                          radius: Radius.circular(4),
+                          child: ListView.separated(
+                              separatorBuilder: (BuildContext context, int index) => const Divider(
+                                thickness: 1,
+                              ),
+                              itemCount: notes.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
                                   //onLongPress: () => notes.removeAt(index),
-                                title: Text(notes [index]),
-                              );
-                            })
+                                  title: Text(notes [index]),
+                                );
+                              }),
+                        )
                     )
                   ],
                 )
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(height: 20),
           ],
         ),
       ),
