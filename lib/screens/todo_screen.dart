@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:treti_lekce/main.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/checkbox.dart';
 import '../widgets/todo_item.dart';
@@ -10,82 +12,132 @@ class TodoScreen extends StatefulWidget {
   @override
   State<TodoScreen> createState() => _TodoScreenState();
 }
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: "neco",
-    );
-}
+
 
 class _TodoScreenState extends State<TodoScreen> {
+  TextEditingController noteController = TextEditingController();
+  late SharedPreferences _prefs;
+  bool loaded = false;
+  List<String> notes = [];
+
+  @override
+  void initState(){
+    super.initState();
+    load();
+  }
+
+  void load() async {
+    _prefs = await SharedPreferences.getInstance();
+    notes = _prefs.getStringList("NOTES") ?? [];
+    loaded = true;
+    setState(() {});
+  }
+
+  void prazdna() {
+    setState(() {});
+  }
+
+  void save() {
+    Fluttertoast.showToast(msg: "Uloženo",);
+    notes.add(noteController.text);
+    noteController.text = "";
+    _prefs.setStringList("NOTES", notes);
+    setState(() {});
+  }
+
+
+
+  void delete() {
+    notes.clear();
+    setState(() {});
+    Fluttertoast.showToast(msg: "Smazáno",);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white38,
       appBar: AppBar(
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+
+              ElevatedButton(onPressed: delete, child: const Text("Smazat označené"),style: ElevatedButton.styleFrom(
+                  primary: Colors.red
+              ),),
+              const SizedBox(width: 10,)
+            ],
+          )
+        ],
         title: const Text("TodoScreen"),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TodoItem(title:"vec1"),
-            TodoItem(title:"vec2"),
-          ],
-        ),
-      ),
-    );
-  }
-}
+            const SizedBox(height: 20,),
 
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
+            SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
 
-  @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
-}
+                    Container(
+                      width: MediaQuery.of(context).size.width/20*19,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: const BorderRadius.all(Radius.circular(20))
+                      ),
 
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  late TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: TextField(
-          controller: _controller,
-          onSubmitted: (String value) async {
-            await showDialog<void>(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Thanks!'),
-                  content: Text(
-                      'You typed "$value", which has length ${value.characters.length}.'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text('OK'),
+                      child: Row(
+                        children: <Widget>[
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width/20*15,
+                            height: 90,
+                            child:TextField(
+                              decoration: const InputDecoration(
+                                  enabledBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                  border: InputBorder.none),
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              controller: noteController,
+                            ),
+                          ),
+                          Container(
+                            width: 40,
+                            child: TextButton(onPressed: save,
+                              child: const Icon(Icons.add),),
+                          )
+                        ],
+                      )
                     ),
+                    Container(
+                        height: 715,
+                        child: ListView.separated(
+                            separatorBuilder: (BuildContext context, int index) => Divider(
+                              thickness: 1,
+                            ),
+                            itemCount: notes.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                  //onLongPress: () => notes.removeAt(index),
+                                title: Text(notes [index]),
+                                  );
+                              children: <Widget>[ //nefunguje!
+                              TodoItem(title:"vec1")
+                              ];
+                            })
+                    )
                   ],
-                );
-              },
-            );
-          },
+                )
+            ),
+            const SizedBox(height: 20,),
+          ],
         ),
       ),
     );
