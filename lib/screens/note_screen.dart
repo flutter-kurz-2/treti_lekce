@@ -117,7 +117,7 @@ class _NoteScreenState extends State<NoteScreen> {
                               itemCount: notes.length,
                               itemBuilder: (context, index) {
                                 return ListTile(
-                                  //onLongPress: () => notes.removeAt(index),
+                                  onLongPress: () => notes.removeAt(index),
                                   title: Text(notes [index]),
                                 );
                               }),
