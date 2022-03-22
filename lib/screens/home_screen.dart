@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:treti_lekce/screens/timer_screen.dart';
 import 'package:treti_lekce/screens/todo_screen.dart';
-
 import 'note_screen.dart';
 
 class HomePage extends StatefulWidget {
