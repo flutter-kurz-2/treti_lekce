@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
 class NoteScreen extends StatefulWidget {
   const NoteScreen({Key? key}) : super(key: key);
@@ -109,15 +110,23 @@ class _NoteScreenState extends State<NoteScreen> {
                     SizedBox(
                         height: 715,
                         child: Scrollbar(
-                          radius: Radius.circular(4),
+                          radius: const Radius.circular(4),
                           child: ListView.separated(
                               separatorBuilder: (BuildContext context, int index) => const Divider(
                                 thickness: 1,
+                                height: 4,
                               ),
                               itemCount: notes.length,
                               itemBuilder: (context, index) {
                                 return ListTile(
-                                  onLongPress: () => notes.removeAt(index),
+                                  onLongPress: () => setState(() {
+                                    Fluttertoast.showToast(msg: "Odstraněno",);
+                                    notes.removeAt(index);
+                                  }),
+                                  onTap: () {
+                                    Fluttertoast.showToast(msg: "Zkopírováno",);
+                                    Clipboard.setData(ClipboardData(text: notes [index]));
+                                  },
                                   title: Text(notes [index]),
                                 );
                               }),
@@ -126,7 +135,6 @@ class _NoteScreenState extends State<NoteScreen> {
                   ],
                 )
             ),
-            const SizedBox(height: 20),
           ],
         ),
       ),
