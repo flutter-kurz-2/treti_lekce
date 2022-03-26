@@ -61,11 +61,11 @@ class _NoteScreenState extends State<NoteScreen> {
         ],
         title: const Text("NoteScreen"),
       ),
-      body: SingleChildScrollView(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const SizedBox(height: 20,),
+            SizedBox(height: MediaQuery.of(context).size.width/20*1,),
 
             SizedBox(
                 width: MediaQuery.of(context).size.width,
@@ -87,7 +87,7 @@ class _NoteScreenState extends State<NoteScreen> {
                           ),
                           SizedBox(
                             width: MediaQuery.of(context).size.width/20*15,
-                            height: 90,
+                            height: 100,
                             child:TextField(
                               decoration: const InputDecoration(
                                   enabledBorder: InputBorder.none,
@@ -107,37 +107,41 @@ class _NoteScreenState extends State<NoteScreen> {
                         ],
                       )
                     ),
-                    SizedBox(
-                        height: 715,
-                        child: Scrollbar(
-                          radius: const Radius.circular(4),
-                          child: ListView.separated(
-                              separatorBuilder: (BuildContext context, int index) => const Divider(
-                                thickness: 1,
-                                height: 4,
-                              ),
-                              itemCount: notes.length,
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  onLongPress: () => setState(() {
-                                    Fluttertoast.showToast(msg: "Odstraněno",);
-                                    notes.removeAt(index);
-                                  }),
-                                  onTap: () {
-                                    Fluttertoast.showToast(msg: "Zkopírováno",);
-                                    Clipboard.setData(ClipboardData(text: notes [index]));
-                                  },
-                                  title: Text(notes [index]),
-                                );
-                              }),
-                        )
-                    )
                   ],
                 )
             ),
+
+            SizedBox(
+                child: Scrollbar(
+                  radius: const Radius.circular(4),
+                  child: ListView.separated(
+                      separatorBuilder: (BuildContext context, int index) => const Divider(
+                        thickness: 1,
+                        height: 4,
+                      ),
+                      itemCount: notes.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          onLongPress: () => setState(() {
+                            Fluttertoast.showToast(msg: "Odstraněno",);
+                            notes.removeAt(index);
+                          }),
+                          onTap: () {
+                            Fluttertoast.showToast(msg: "Zkopírováno",);
+                            Clipboard.setData(ClipboardData(text: notes [index]));
+                          },
+                          title: Text(notes [index]),
+                        );
+                      }),
+                )
+            )
           ],
         ),
       ),
     );
   }
 }
+
+
+//MediaQuery.of(context).size.width/20*1,
+//
